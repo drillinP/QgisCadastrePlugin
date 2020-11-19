@@ -1469,7 +1469,11 @@ class CadastreSearchDialog(QDockWidget, SEARCH_FORM_CLASS):
             # ~ sql+= ' INNER JOIN commune c ON c.ccocom = p.ccocom'
             sql += " WHERE 2>1"
             for sv in searchValues:
-                sql += " AND ddenom LIKE %s" % self.connector.quoteString('%' + sv + '%')
+                sql += " AND ("
+                sql += " ddenom LIKE %s" % self.connector.quoteString('%' + sv + '%');
+                sql += " OR ";
+                sql += " comptecommunal LIKE %s" % self.connector.quoteString('%' + sv + '%');
+                sql += " ) ";
             sql += ' GROUP BY dnuper, ddenom, dlign4'  # , c.ccocom'
             sql += ' ORDER BY ddenom'  # , c.ccocom'
         self.dbType = connectionParams['dbType']
